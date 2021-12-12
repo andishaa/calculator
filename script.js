@@ -1,3 +1,4 @@
+
 const add = (a, b) => a + b;
 
 const subtract = (a, b) => b < 0 ? a - (-b) : a - b;
@@ -24,3 +25,16 @@ const operate = (operator, num1, num2) => {
             break;
     }
 };
+
+//Display and store selected number
+const displayStatus = document.querySelector('#displayStatus');
+
+let inputNumber = '';
+const numberBtn = document.querySelectorAll('.number');
+numberBtn.forEach(item => {
+    item.addEventListener('click', e => {
+        inputNumber += e.target.textContent;
+        displayStatus.textContent = inputNumber;
+        inputNumber = Number(inputNumber);
+    });
+});
