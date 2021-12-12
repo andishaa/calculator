@@ -1,0 +1,39 @@
+body {
+    height: 100vh;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+}
+
+#display {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    padding: 15px;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+#buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 50px);
+    column-gap: 2px;
+    row-gap: 2px;
+    margin-top: 10px;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    padding: 20px;
+    width: 100%;
+    text-align: center;
+}
