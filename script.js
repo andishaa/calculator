@@ -30,11 +30,16 @@ const operate = (operator, num1, num2) => {
 const displayStatus = document.querySelector('#displayStatus');
 
 let inputNumber = '';
+let displayValue = '';
 const numberBtn = document.querySelectorAll('.number');
 numberBtn.forEach(item => {
     item.addEventListener('click', e => {
         inputNumber += e.target.textContent;
+        if (inputNumber.includes('.')) {
+            document.querySelector('#decimal').disabled = true;
+        }
         displayStatus.textContent = inputNumber;
-        inputNumber = Number(inputNumber);
+
+        displayValue = Number(inputNumber);
     });
 });
