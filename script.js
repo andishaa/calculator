@@ -29,7 +29,11 @@ function operate(operator, num1, num2) {
             return divide(num1, num2);
             break;
         case '=':
-            return operate(operationQueued,num1,num2);
+            if (operator === operationQueued){
+                return inputNumber;
+            } else {
+            return operate(operationQueued, num1, num2);
+            }
             break;
         default:
             break;
@@ -71,7 +75,7 @@ function initOperationBtns() {
 function operationClicked(operator) {
     let operationResult = 0;
 
-    if (inputNumber === '0') {
+    if (operationQueued === '/' && inputNumber === '0') {
         let errMsg = 'Can\'t devide by 0';
         displayStatus.textContent = errMsg;
         inputNumber = '';
