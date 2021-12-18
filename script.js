@@ -52,12 +52,7 @@ function initNumberBtns() {
 }
 
 function numberClicked(strNumber) {
-    console.log('------ Number Click ------')
     inputNumber += strNumber;
-    console.log('clicked number:', strNumber);
-    console.log('inputNumber:', inputNumber);
-    console.log('------ Number Click End ------')
-
 }
 
 function initOperationBtns() {
