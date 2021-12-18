@@ -47,6 +47,7 @@ function initNumberBtns() {
             let chosenNumber = '';
             chosenNumber += e.target.textContent;
             numberClicked(chosenNumber);
+            displayStatus.textContent = inputNumber;
         });
     });
 }
@@ -74,21 +75,21 @@ function operationClicked(operator) {
         let errMsg = 'Can\'t devide by 0';
         displayStatus.textContent = errMsg;
         inputNumber = '';
-        console.log('cant devide by 0');
         return;
     }
 
     if (memory !== '' && inputNumber !== '') {
-        operationResult = operate(operator, Number(memory), Number(inputNumber));
+
+        operationResult = operate(operationQueued, Number(memory), Number(inputNumber));
         memory = operationResult;
     }
 
     operationQueued = operator;
-    
-    if (memory === '') {
+
+    if (memory === '' && inputNumber !== '') {
         memory = inputNumber;
     }
 
-
+    displayStatus.textContent = memory;
     inputNumber = '';
 }
