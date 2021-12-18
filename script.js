@@ -1,16 +1,23 @@
+let memory = '';
+let inputNumber = '';
+let operationQueued = '';
+
+function init() {
+    initNumberBtns();
+    initOperationBtns();
+}
+init();
 
 const add = (a, b) => a + b;
-
 const subtract = (a, b) => b < 0 ? a - (-b) : a - b;
-
 const multiply = (a, b) => a * b;
-
 const divide = (a, b) => a / b;
 
-const operate = (operator, num1, num2) => {
+function operate(operator, num1, num2) {
     switch (operator) {
         case '+':
-            return add(num1, num2);
+            let result = add(num1, num2);
+            return result;
             break;
         case '-':
             return subtract(num1, num2);
@@ -21,25 +28,64 @@ const operate = (operator, num1, num2) => {
         case '/':
             return divide(num1, num2);
             break;
+        case '=':
+            return operate(operationQueued,num1,num2);
+            break;
         default:
             break;
     }
 };
 
-//Display and store selected number
 const displayStatus = document.querySelector('#displayStatus');
 
-let inputNumber = '';
-let displayValue = '';
-const numberBtn = document.querySelectorAll('.number');
-numberBtn.forEach(item => {
-    item.addEventListener('click', e => {
-        inputNumber += e.target.textContent;
-        if (inputNumber.includes('.')) {
-            document.querySelector('#decimal').disabled = true;
-        }
-        displayStatus.textContent = inputNumber;
+function initNumberBtns() {
+    const selectedNumber = document.querySelectorAll('.numbers');
 
-        displayValue = Number(inputNumber);
+    selectedNumber.forEach(btn => {
+
+        btn.addEventListener('click', e => {
+            let chosenNumber = '';
+            chosenNumber += e.target.textContent;
+            numberClicked(chosenNumber);
+        });
     });
-});
+}
+
+function numberClicked(strNumber) {
+    console.log('------ Number Click ------')
+    inputNumber += strNumber;
+    console.log('clicked number:', strNumber);
+    console.log('inputNumber:', inputNumber);
+    console.log('------ Number Click End ------')
+
+}
+
+function initOperationBtns() {
+
+    const selectOperator = document.querySelectorAll('.operators')
+    selectOperator.forEach(btn => {
+        btn.addEventListener('click', e => {
+            let chosenOperator = e.target.textContent;
+            operationClicked(chosenOperator);
+        });
+    });
+
+}
+
+function operationClicked(operator) {
+    let operationResult = 0;
+
+    if (memory !== '' && inputNumber !== '') {
+        operationResult = operate(operator, Number(memory), Number(inputNumber));
+        memory = operationResult;
+    }
+
+    operationQueued = operator;
+    
+    if (memory === '') {
+        memory = inputNumber;
+    }
+
+
+    inputNumber = '';
+}
