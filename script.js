@@ -29,10 +29,10 @@ function operate(operator, num1, num2) {
             return divide(num1, num2);
             break;
         case '=':
-            if (operator === operationQueued){
+            if (operator === operationQueued) {
                 return inputNumber;
             } else {
-            return operate(operationQueued, num1, num2);
+                return operate(operationQueued, num1, num2);
             }
             break;
         default:
@@ -41,6 +41,7 @@ function operate(operator, num1, num2) {
 };
 
 const displayStatus = document.querySelector('#displayStatus');
+const decimalBtn = document.querySelector('#decimal');
 
 function initNumberBtns() {
     const selectedNumber = document.querySelectorAll('.numbers');
@@ -57,7 +58,12 @@ function initNumberBtns() {
 }
 
 function numberClicked(strNumber) {
+    if (inputNumber.includes('.')) {
+        decimalBtn.disabled = true;
+    }
+    
     inputNumber += strNumber;
+
 }
 
 function initOperationBtns() {
@@ -74,6 +80,7 @@ function initOperationBtns() {
 
 function operationClicked(operator) {
     let operationResult = 0;
+    decimalBtn.disabled = false;
 
     if (operationQueued === '/' && inputNumber === '0') {
         let errMsg = 'Can\'t devide by 0';
