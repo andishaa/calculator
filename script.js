@@ -2,6 +2,7 @@ const displayStatus = document.querySelector('#displayStatus');
 const displayHistory = document.querySelector('#displayHistory');
 const decimalBtn = document.querySelector('#decimal');
 const clearGlobalBtn = document.querySelector('#clearGlobal');
+const clearEntryBtn = document.querySelector('#clearEntry');
 
 let memory = '';
 let inputNumber = '';
@@ -11,6 +12,7 @@ function init() {
     initNumberBtns();
     initOperationBtns();
     clearGlobal();
+    clearEntry();
 }
 init();
 
@@ -116,5 +118,12 @@ function clearGlobal() {
         operationQueued = '';
         displayStatus.textContent = '';
         displayHistory.textContent = '';
+    });
+}
+
+function clearEntry() {
+    clearEntryBtn.addEventListener('click', () => {
+        inputNumber = '';
+        displayStatus.textContent = '';
     });
 }
