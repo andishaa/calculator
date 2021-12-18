@@ -42,6 +42,7 @@ function operate(operator, num1, num2) {
 
 const displayStatus = document.querySelector('#displayStatus');
 const decimalBtn = document.querySelector('#decimal');
+const clearGlobalBtn = document.querySelector('#clearGlobal');
 
 function initNumberBtns() {
     const selectedNumber = document.querySelectorAll('.numbers');
@@ -61,7 +62,7 @@ function numberClicked(strNumber) {
     if (inputNumber.includes('.')) {
         decimalBtn.disabled = true;
     }
-    
+
     inputNumber += strNumber;
 
 }
@@ -104,3 +105,14 @@ function operationClicked(operator) {
     displayStatus.textContent = memory;
     inputNumber = '';
 }
+
+function clearGlobal() {
+    clearGlobalBtn.addEventListener('click', () => {
+        inputNumber = '';
+        memory = '';
+        operationQueued = '';
+        displayStatus.textContent = '';
+
+    })
+}
+clearGlobal();
