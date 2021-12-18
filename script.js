@@ -1,3 +1,7 @@
+const displayStatus = document.querySelector('#displayStatus');
+const decimalBtn = document.querySelector('#decimal');
+const clearGlobalBtn = document.querySelector('#clearGlobal');
+
 let memory = '';
 let inputNumber = '';
 let operationQueued = '';
@@ -5,6 +9,7 @@ let operationQueued = '';
 function init() {
     initNumberBtns();
     initOperationBtns();
+    clearGlobal();
 }
 init();
 
@@ -39,10 +44,6 @@ function operate(operator, num1, num2) {
             break;
     }
 };
-
-const displayStatus = document.querySelector('#displayStatus');
-const decimalBtn = document.querySelector('#decimal');
-const clearGlobalBtn = document.querySelector('#clearGlobal');
 
 function initNumberBtns() {
     const selectedNumber = document.querySelectorAll('.numbers');
@@ -115,4 +116,3 @@ function clearGlobal() {
 
     })
 }
-clearGlobal();
