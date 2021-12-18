@@ -1,4 +1,5 @@
 const displayStatus = document.querySelector('#displayStatus');
+const displayHistory = document.querySelector('#displayHistory');
 const decimalBtn = document.querySelector('#decimal');
 const clearGlobalBtn = document.querySelector('#clearGlobal');
 
@@ -104,6 +105,7 @@ function operationClicked(operator) {
     }
 
     displayStatus.textContent = memory;
+    displayHistory.textContent = `${memory} ${operationQueued}`;
     inputNumber = '';
 }
 
@@ -113,6 +115,6 @@ function clearGlobal() {
         memory = '';
         operationQueued = '';
         displayStatus.textContent = '';
-
-    })
+        displayHistory.textContent = '';
+    });
 }
