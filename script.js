@@ -107,8 +107,8 @@ function operationClicked(operator) {
     if (!Number.isInteger(memory) && typeof memory !== 'string') {
         memory = memory.toFixed(2);
     }
-    
-    displayStatus.textContent = memory;
+
+    displayStatus.textContent = '';
     displayHistory.textContent = `${memory} ${operationQueued}`;
     inputNumber = '';
 }
@@ -132,6 +132,9 @@ function clearEntry() {
 
 function backSpaceEraser() {
     backSpaceBtn.addEventListener('click', () => {
+        if (operationQueued === '=') {
+            return;
+        }
         inputNumber = inputNumber.slice(0, inputNumber.length - 1);
         displayStatus.textContent = inputNumber;
     });
