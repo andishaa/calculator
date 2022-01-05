@@ -3,6 +3,7 @@ const displayHistory = document.querySelector('#displayHistory');
 const decimalBtn = document.querySelector('#decimal');
 const clearGlobalBtn = document.querySelector('#clearGlobal');
 const clearEntryBtn = document.querySelector('#clearEntry');
+const backSpaceBtn = document.querySelector('#backSpace');
 
 let memory = '';
 let inputNumber = '';
@@ -13,6 +14,7 @@ function init() {
     initOperationBtns();
     clearGlobal();
     clearEntry();
+    backSpaceEraser();
 }
 init();
 
@@ -26,16 +28,12 @@ function operate(operator, num1, num2) {
         case '+':
             let result = add(num1, num2);
             return result;
-            break;
         case '-':
             return subtract(num1, num2);
-            break;
         case '*':
             return multiply(num1, num2);
-            break;
         case '/':
             return divide(num1, num2);
-            break;
         case '=':
             if (operator === operationQueued) {
                 return inputNumber;
@@ -63,12 +61,12 @@ function initNumberBtns() {
 }
 
 function numberClicked(strNumber) {
-    if (inputNumber.includes('.')) {
-        decimalBtn.disabled = true;
-    }
 
     inputNumber += strNumber;
 
+    if (inputNumber.includes('.')) {
+        decimalBtn.disabled = true;
+    }
 }
 
 function initOperationBtns() {
@@ -125,5 +123,12 @@ function clearEntry() {
     clearEntryBtn.addEventListener('click', () => {
         inputNumber = '';
         displayStatus.textContent = '';
+    });
+}
+
+function backSpaceEraser() {
+    backSpaceBtn.addEventListener('click', () => {
+        inputNumber = inputNumber.slice(0, inputNumber.length - 1);
+        displayStatus.textContent = inputNumber;
     });
 }
