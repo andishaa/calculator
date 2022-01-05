@@ -15,11 +15,16 @@ main {
 #display {
     display: flex;
     flex-direction: column;
+    gap: 3px;
     align-items: end;
     padding: 15px;
     border: 1px solid black;
     border-radius: 10px;
     height: 30px;
+}
+
+#displayHistory {
+    height: 15px;
 }
 
 #buttons {

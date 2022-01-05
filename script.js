@@ -104,6 +104,10 @@ function operationClicked(operator) {
         memory = inputNumber;
     }
 
+    if (!Number.isInteger(memory) && typeof memory !== 'string') {
+        memory = memory.toFixed(2);
+    }
+    
     displayStatus.textContent = memory;
     displayHistory.textContent = `${memory} ${operationQueued}`;
     inputNumber = '';
