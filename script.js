@@ -108,13 +108,18 @@ function operationClicked(operator) {
         memory = memory.toFixed(2);
     }
 
+    inputNumber = '';
+
+    populateDisplay();
+}
+
+function populateDisplay() {
     displayStatus.textContent = '';
     if (operationQueued === '=') {
         displayHistory.textContent = memory;
     } else {
     displayHistory.textContent = `${memory} ${operationQueued}`;
     }
-    inputNumber = '';
 }
 
 function clearGlobal() {
