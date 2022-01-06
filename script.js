@@ -109,7 +109,11 @@ function operationClicked(operator) {
     }
 
     displayStatus.textContent = '';
+    if (operationQueued === '=') {
+        displayHistory.textContent = memory;
+    } else {
     displayHistory.textContent = `${memory} ${operationQueued}`;
+    }
     inputNumber = '';
 }
 
@@ -120,6 +124,7 @@ function clearGlobal() {
         operationQueued = '';
         displayStatus.textContent = '';
         displayHistory.textContent = '';
+        decimalBtn.disabled = false;
     });
 }
 
@@ -127,14 +132,12 @@ function clearEntry() {
     clearEntryBtn.addEventListener('click', () => {
         inputNumber = '';
         displayStatus.textContent = '';
+        decimalBtn.disabled = false;
     });
 }
 
 function backSpaceEraser() {
     backSpaceBtn.addEventListener('click', () => {
-        if (operationQueued === '=') {
-            return;
-        }
         inputNumber = inputNumber.slice(0, inputNumber.length - 1);
         displayStatus.textContent = inputNumber;
     });
