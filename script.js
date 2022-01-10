@@ -60,6 +60,32 @@ function initNumberBtns() {
     });
 }
 
+const KEY_NUMBERS = [
+    '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'
+]
+const KEY_OPERATORS = [
+    '*', '/', '.', '-', '+', '=', 'Enter'
+]
+
+function keyBoard() {
+    document.addEventListener('keydown', event => {
+        if (KEY_NUMBERS.includes(event.key)) {
+            let chosenNumber = '';
+            chosenNumber += event.key;
+            numberClicked(chosenNumber);
+            displayStatus.textContent = inputNumber;
+        }
+        if (KEY_OPERATORS.includes(event.key)) {
+            let chosenOperator = event.key;
+            if (chosenOperator === 'Enter') {
+                chosenOperator = '=';
+            }
+            operationClicked(chosenOperator);
+        }
+    })
+}
+keyBoard();
+
 function numberClicked(strNumber) {
 
     inputNumber += strNumber;
@@ -118,7 +144,7 @@ function populateDisplay() {
     if (operationQueued === '=') {
         displayHistory.textContent = memory;
     } else {
-    displayHistory.textContent = `${memory} ${operationQueued}`;
+        displayHistory.textContent = `${memory} ${operationQueued}`;
     }
 }
 
