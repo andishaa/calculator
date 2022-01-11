@@ -4,6 +4,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #092834;
+    font-family:'Times New Roman', Times, serif;
 }
 
 main {
@@ -12,15 +14,22 @@ main {
     width: 350px;
 }
 
+header {
+    color: #B2D732;
+}
+
 #display {
     display: flex;
     flex-direction: column;
     gap: 3px;
     align-items: end;
     padding: 15px;
-    border: 1px solid black;
+    border: 1px solid #B2D732;
     border-radius: 10px;
     height: 30px;
+    color: #B2D732;
+    font-weight: bold;
+    font-size: 20px;
 }
 
 #displayHistory {
@@ -36,10 +45,38 @@ main {
     margin-top: 10px;
 }
 
+#buttons button {
+    border: 1px solid none;
+    border-radius: 8px;
+}
+
+.operators {
+    background-color: #66B032;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+#equal {
+    background-color: orange;
+}
+
 footer {
     position: fixed;
     bottom: 0;
     padding: 20px;
     width: 100%;
     text-align: center;
+    color: white;
+    background-color: #31331e;
+}
+
+a {
+    color: #66B032;
+    text-decoration: none;
+    
+}
+
+p {
+    margin: 4px;
 }
