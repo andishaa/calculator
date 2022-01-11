@@ -57,8 +57,16 @@ header {
     font-size: 15px;
 }
 
+.operators:hover {
+    background-color: #3f701b;
+}
+
 #equal {
     background-color: orange;
+}
+
+#equal:hover {
+    background-color: #bd7b00;
 }
 
 footer {
@@ -77,6 +85,6 @@ a {
     
 }
 
-p {
+footer p {
     margin: 4px;
 }
