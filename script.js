@@ -64,7 +64,7 @@ const KEY_NUMBERS = [
     '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.'
 ]
 const KEY_OPERATORS = [
-    '*', '/', '-', '+', '=', 'Enter'
+    '*', '/', '-', '+', '=', 'Enter', 'Backspace'
 ]
 
 function keyBoard() {
@@ -79,6 +79,11 @@ function keyBoard() {
             let chosenOperator = event.key;
             if (chosenOperator === 'Enter') {
                 chosenOperator = '=';
+            }
+            if (chosenOperator === 'Backspace') {
+                inputNumber = inputNumber.slice(0, inputNumber.length - 1);
+                displayStatus.textContent = inputNumber;
+                return;
             }
             operationClicked(chosenOperator);
         }
