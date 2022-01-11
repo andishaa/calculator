@@ -15,6 +15,7 @@ function init() {
     clearGlobal();
     clearEntry();
     backSpaceEraser();
+    keyBoard();
 }
 init();
 
@@ -89,7 +90,6 @@ function keyBoard() {
         }
     })
 }
-keyBoard();
 
 function numberClicked(strNumber) {
 
