@@ -54,9 +54,8 @@ function initNumberBtns() {
 
         btn.addEventListener('click', e => {
             let chosenNumber = '';
-            chosenNumber += e.target.textContent;
+            chosenNumber = e.target.textContent;
             numberClicked(chosenNumber);
-            displayStatus.textContent = inputNumber;
         });
     });
 }
@@ -72,9 +71,8 @@ function keyBoard() {
     document.addEventListener('keydown', event => {
         if (KEY_NUMBERS.includes(event.key)) {
             let chosenNumber = '';
-            chosenNumber += event.key;
+            chosenNumber = event.key;
             numberClicked(chosenNumber);
-            displayStatus.textContent = inputNumber;
         }
         if (KEY_OPERATORS.includes(event.key)) {
             let chosenOperator = event.key;
@@ -98,6 +96,13 @@ function numberClicked(strNumber) {
     if (inputNumber.includes('.')) {
         decimalBtn.disabled = true;
     }
+
+    if (inputNumber.charAt(0) === '0' && decimalBtn.disabled === false) {
+        inputNumber = '0';
+    }
+
+    displayStatus.textContent = inputNumber;
+
 }
 
 function initOperationBtns() {
