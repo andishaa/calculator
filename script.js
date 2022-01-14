@@ -41,9 +41,6 @@ function operate(operator, num1, num2) {
             } else {
                 return operate(operationQueued, num1, num2);
             }
-            break;
-        default:
-            break;
     }
 };
 
@@ -53,8 +50,7 @@ function initNumberBtns() {
     selectedNumber.forEach(btn => {
 
         btn.addEventListener('click', e => {
-            let chosenNumber = '';
-            chosenNumber = e.target.textContent;
+            let chosenNumber = e.target.textContent;
             numberClicked(chosenNumber);
         });
     });
@@ -70,8 +66,7 @@ const KEY_OPERATORS = [
 function keyBoard() {
     document.addEventListener('keydown', event => {
         if (KEY_NUMBERS.includes(event.key)) {
-            let chosenNumber = '';
-            chosenNumber = event.key;
+            let chosenNumber = event.key;
             numberClicked(chosenNumber);
         }
         if (KEY_OPERATORS.includes(event.key)) {
@@ -122,8 +117,7 @@ function operationClicked(operator) {
     decimalBtn.disabled = false;
 
     if (operationQueued === '/' && inputNumber === '0') {
-        let errMsg = 'Can\'t devide by 0';
-        displayStatus.textContent = errMsg;
+        displayStatus.textContent = 'Can\' divide with 0';
         inputNumber = '';
         return;
     }
