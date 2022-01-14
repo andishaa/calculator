@@ -4,6 +4,7 @@ const decimalBtn = document.querySelector('#decimal');
 const clearGlobalBtn = document.querySelector('#clearGlobal');
 const clearEntryBtn = document.querySelector('#clearEntry');
 const backSpaceBtn = document.querySelector('#backSpace');
+const plusMinusBtn = document.querySelector('#plusMinus');
 
 let memory = '';
 let inputNumber = '';
@@ -16,6 +17,7 @@ function init() {
     clearEntry();
     backSpaceEraser();
     keyBoard();
+    addRemoveMinus();
 }
 init();
 
@@ -174,6 +176,18 @@ function clearEntry() {
 function backSpaceEraser() {
     backSpaceBtn.addEventListener('click', () => {
         inputNumber = inputNumber.slice(0, inputNumber.length - 1);
+        displayStatus.textContent = inputNumber;
+    });
+}
+
+function addRemoveMinus() {
+    plusMinusBtn.addEventListener('click', () => {
+    
+        if(inputNumber.charAt(0) !== '-') {
+            inputNumber = `-${inputNumber}`
+        } else {
+            inputNumber = inputNumber.slice(1);
+        }
         displayStatus.textContent = inputNumber;
     });
 }
