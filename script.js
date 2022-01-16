@@ -13,6 +13,7 @@ const CalculatorOperations = {
 };
 
 class Calculator {
+    memory = '';
     inputNumber = '';
 
     add(a, b){
@@ -52,7 +53,7 @@ class Calculator {
     }
 }
 
-const calculator = new Calculator()
+const calculator = new Calculator();
 
 const displayStatus = document.querySelector('#displayStatus');
 const displayHistory = document.querySelector('#displayHistory');
@@ -62,7 +63,7 @@ const clearEntryBtn = document.querySelector('#clearEntry');
 const backSpaceBtn = document.querySelector('#backSpace');
 const plusMinusBtn = document.querySelector('#plusMinus');
 
-let memory = '';
+// let memory = '';
 // let inputNumber = '';
 let operationQueued = '';
 
@@ -151,20 +152,20 @@ function operationClicked(operator) {
         return;
     }
 
-    if (memory !== '' && calculator.inputNumber !== '') {
+    if (calculator.memory !== '' && calculator.inputNumber !== '') {
 
-        operationResult = calculator.operate(operationQueued, Number(memory), Number(calculator.inputNumber));
-        memory = operationResult;
+        operationResult = calculator.operate(operationQueued, Number(calculator.memory), Number(calculator.inputNumber));
+        calculator.memory = operationResult;
     }
 
     operationQueued = operator;
 
-    if (memory === '' && calculator.inputNumber !== '') {
-        memory = calculator.inputNumber;
+    if (calculator.memory === '' && calculator.inputNumber !== '') {
+        calculator.memory = calculator.inputNumber;
     }
 
-    if (!Number.isInteger(memory) && typeof memory !== 'string') {
-        memory = memory.toFixed(2);
+    if (!Number.isInteger(calculator.memory) && typeof calculator.memory !== 'string') {
+        calculator.memory = calculator.memory.toFixed(2);
     }
 
     calculator.inputNumber = '';
@@ -175,16 +176,16 @@ function operationClicked(operator) {
 function populateDisplay() {
     displayStatus.textContent = '';
     if (operationQueued === CalculatorOperations.EQUAL) {
-        displayHistory.textContent = memory;
+        displayHistory.textContent = calculator.memory;
     } else {
-        displayHistory.textContent = `${memory} ${operationQueued}`;
+        displayHistory.textContent = `${calculator.memory} ${operationQueued}`;
     }
 }
 
 function clearGlobal() {
     clearGlobalBtn.addEventListener('click', () => {
         calculator.inputNumber = '';
-        memory = '';
+        calculator.memory = '';
         operationQueued = '';
         displayStatus.textContent = '';
         displayHistory.textContent = '';
