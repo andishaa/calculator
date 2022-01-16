@@ -64,10 +64,6 @@ const clearEntryBtn = document.querySelector('#clearEntry');
 const backSpaceBtn = document.querySelector('#backSpace');
 const plusMinusBtn = document.querySelector('#plusMinus');
 
-// let memory = '';
-// let inputNumber = '';
-// let operationQueued = '';
-
 function init() {
     initNumberBtns();
     initOperationBtns();
