@@ -15,6 +15,7 @@ const CalculatorOperations = {
 class Calculator {
     memory = '';
     inputNumber = '';
+    operationQueued = '';
 
     add(a, b){
         return a + b;
@@ -44,10 +45,10 @@ class Calculator {
             case CalculatorOperations.DIVIDE:
                 return this.divide(num1, num2);
             case CalculatorOperations.EQUAL:
-                if (operator === operationQueued) {
+                if (operator === this.operationQueued) {
                     return this.inputNumber;
                 } else {
-                    return this.operate(operationQueued, num1, num2);
+                    return this.operate(this.operationQueued, num1, num2);
                 }
         }
     }
@@ -65,7 +66,7 @@ const plusMinusBtn = document.querySelector('#plusMinus');
 
 // let memory = '';
 // let inputNumber = '';
-let operationQueued = '';
+// let operationQueued = '';
 
 function init() {
     initNumberBtns();
@@ -146,7 +147,7 @@ function operationClicked(operator) {
     let operationResult = 0;
     decimalBtn.disabled = false;
 
-    if (operationQueued === CalculatorOperations.DIVIDE && calculator.inputNumber === '0') {
+    if (calculator.operationQueued === CalculatorOperations.DIVIDE && calculator.inputNumber === '0') {
         displayStatus.textContent = 'Can\' divide with 0';
         calculator.inputNumber = '';
         return;
@@ -154,11 +155,11 @@ function operationClicked(operator) {
 
     if (calculator.memory !== '' && calculator.inputNumber !== '') {
 
-        operationResult = calculator.operate(operationQueued, Number(calculator.memory), Number(calculator.inputNumber));
+        operationResult = calculator.operate(calculator.operationQueued, Number(calculator.memory), Number(calculator.inputNumber));
         calculator.memory = operationResult;
     }
 
-    operationQueued = operator;
+    calculator.operationQueued = operator;
 
     if (calculator.memory === '' && calculator.inputNumber !== '') {
         calculator.memory = calculator.inputNumber;
@@ -175,10 +176,10 @@ function operationClicked(operator) {
 
 function populateDisplay() {
     displayStatus.textContent = '';
-    if (operationQueued === CalculatorOperations.EQUAL) {
+    if (calculator.operationQueued === CalculatorOperations.EQUAL) {
         displayHistory.textContent = calculator.memory;
     } else {
-        displayHistory.textContent = `${calculator.memory} ${operationQueued}`;
+        displayHistory.textContent = `${calculator.memory} ${calculator.operationQueued}`;
     }
 }
 
@@ -186,7 +187,7 @@ function clearGlobal() {
     clearGlobalBtn.addEventListener('click', () => {
         calculator.inputNumber = '';
         calculator.memory = '';
-        operationQueued = '';
+        calculator.operationQueued = '';
         displayStatus.textContent = '';
         displayHistory.textContent = '';
         decimalBtn.disabled = false;
