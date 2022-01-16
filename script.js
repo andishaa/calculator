@@ -1,3 +1,10 @@
+const KEY_NUMBERS = [
+    '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.'
+];
+const KEY_OPERATORS = [
+    '*', '/', '-', '+', '=', 'Enter', 'Backspace'
+];
+
 const displayStatus = document.querySelector('#displayStatus');
 const displayHistory = document.querySelector('#displayHistory');
 const decimalBtn = document.querySelector('#decimal');
@@ -57,13 +64,6 @@ function initNumberBtns() {
         });
     });
 }
-
-const KEY_NUMBERS = [
-    '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.'
-]
-const KEY_OPERATORS = [
-    '*', '/', '-', '+', '=', 'Enter', 'Backspace'
-]
 
 function keyBoard() {
     document.addEventListener('keydown', event => {
