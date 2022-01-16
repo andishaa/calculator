@@ -13,6 +13,8 @@ const CalculatorOperations = {
 };
 
 class Calculator {
+    inputNumber = '';
+
     add(a, b){
         return a + b;
     }
@@ -42,7 +44,7 @@ class Calculator {
                 return this.divide(num1, num2);
             case CalculatorOperations.EQUAL:
                 if (operator === operationQueued) {
-                    return inputNumber;
+                    return this.inputNumber;
                 } else {
                     return this.operate(operationQueued, num1, num2);
                 }
@@ -61,7 +63,7 @@ const backSpaceBtn = document.querySelector('#backSpace');
 const plusMinusBtn = document.querySelector('#plusMinus');
 
 let memory = '';
-let inputNumber = '';
+// let inputNumber = '';
 let operationQueued = '';
 
 function init() {
@@ -102,8 +104,8 @@ function keyBoard() {
                 chosenOperator = CalculatorOperations.EQUAL;
             }
             if (chosenOperator === CalculatorOperations.CORRECT) {
-                inputNumber = inputNumber.slice(0, inputNumber.length - 1);
-                displayStatus.textContent = inputNumber;
+                calculator.inputNumber = calculator.inputNumber.slice(0, calculator.inputNumber.length - 1);
+                displayStatus.textContent = calculator.inputNumber;
                 return;
             }
             operationClicked(chosenOperator);
@@ -113,17 +115,17 @@ function keyBoard() {
 
 function numberClicked(strNumber) {
 
-    inputNumber += strNumber;
+    calculator.inputNumber += strNumber;
 
-    if (inputNumber.includes('.')) {
+    if (calculator.inputNumber.includes('.')) {
         decimalBtn.disabled = true;
     }
 
-    if (inputNumber.charAt(0) === '0' && decimalBtn.disabled === false) {
-        inputNumber = '0';
+    if (calculator.inputNumber.charAt(0) === '0' && decimalBtn.disabled === false) {
+        calculator.inputNumber = '0';
     }
 
-    displayStatus.textContent = inputNumber;
+    displayStatus.textContent = calculator.inputNumber;
 
 }
 
@@ -143,29 +145,29 @@ function operationClicked(operator) {
     let operationResult = 0;
     decimalBtn.disabled = false;
 
-    if (operationQueued === CalculatorOperations.DIVIDE && inputNumber === '0') {
+    if (operationQueued === CalculatorOperations.DIVIDE && calculator.inputNumber === '0') {
         displayStatus.textContent = 'Can\' divide with 0';
-        inputNumber = '';
+        calculator.inputNumber = '';
         return;
     }
 
-    if (memory !== '' && inputNumber !== '') {
+    if (memory !== '' && calculator.inputNumber !== '') {
 
-        operationResult = calculator.operate(operationQueued, Number(memory), Number(inputNumber));
+        operationResult = calculator.operate(operationQueued, Number(memory), Number(calculator.inputNumber));
         memory = operationResult;
     }
 
     operationQueued = operator;
 
-    if (memory === '' && inputNumber !== '') {
-        memory = inputNumber;
+    if (memory === '' && calculator.inputNumber !== '') {
+        memory = calculator.inputNumber;
     }
 
     if (!Number.isInteger(memory) && typeof memory !== 'string') {
         memory = memory.toFixed(2);
     }
 
-    inputNumber = '';
+    calculator.inputNumber = '';
 
     populateDisplay();
 }
@@ -181,7 +183,7 @@ function populateDisplay() {
 
 function clearGlobal() {
     clearGlobalBtn.addEventListener('click', () => {
-        inputNumber = '';
+        calculator.inputNumber = '';
         memory = '';
         operationQueued = '';
         displayStatus.textContent = '';
@@ -192,7 +194,7 @@ function clearGlobal() {
 
 function clearEntry() {
     clearEntryBtn.addEventListener('click', () => {
-        inputNumber = '';
+        calculator.inputNumber = '';
         displayStatus.textContent = '';
         decimalBtn.disabled = false;
     });
@@ -200,19 +202,19 @@ function clearEntry() {
 
 function backSpaceEraser() {
     backSpaceBtn.addEventListener('click', () => {
-        inputNumber = inputNumber.slice(0, inputNumber.length - 1);
-        displayStatus.textContent = inputNumber;
+        calculator.inputNumber = calculator.inputNumber.slice(0, calculator.inputNumber.length - 1);
+        displayStatus.textContent = calculator.inputNumber;
     });
 }
 
 function addRemoveMinus() {
     plusMinusBtn.addEventListener('click', () => {
     
-        if(inputNumber.charAt(0) !== '-') {
-            inputNumber = `-${inputNumber}`
+        if(calculator.inputNumber.charAt(0) !== '-') {
+            calculator.inputNumber = `-${calculator.inputNumber}`
         } else {
-            inputNumber = inputNumber.slice(1);
+            calculator.inputNumber = calculator.inputNumber.slice(1);
         }
-        displayStatus.textContent = inputNumber;
+        displayStatus.textContent = calculator.inputNumber;
     });
 }
