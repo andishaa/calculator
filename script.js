@@ -28,6 +28,26 @@ class Calculator {
     divide(a, b){
         return a / b;
     }
+
+    operate(operator, num1, num2) {
+        switch (operator) {
+            case CalculatorOperations.ADD:
+                let result = this.add(num1, num2);
+                return result;
+            case CalculatorOperations.SUBTRACT:
+                return this.subtract(num1, num2);
+            case CalculatorOperations.MULTIPLY:
+                return this.multiply(num1, num2);
+            case CalculatorOperations.DIVIDE:
+                return this.divide(num1, num2);
+            case CalculatorOperations.EQUAL:
+                if (operator === operationQueued) {
+                    return inputNumber;
+                } else {
+                    return this.operate(operationQueued, num1, num2);
+                }
+        }
+    }
 }
 
 const calculator = new Calculator()
@@ -53,27 +73,8 @@ function init() {
     keyBoard();
     addRemoveMinus();
 }
-init();
 
-function operate(operator, num1, num2) {
-    switch (operator) {
-        case CalculatorOperations.ADD:
-            let result = calculator.add(num1, num2);
-            return result;
-        case CalculatorOperations.SUBTRACT:
-            return calculator.subtract(num1, num2);
-        case CalculatorOperations.MULTIPLY:
-            return calculator.multiply(num1, num2);
-        case CalculatorOperations.DIVIDE:
-            return calculator.divide(num1, num2);
-        case CalculatorOperations.EQUAL:
-            if (operator === operationQueued) {
-                return inputNumber;
-            } else {
-                return operate(operationQueued, num1, num2);
-            }
-    }
-};
+init();
 
 function initNumberBtns() {
     const selectedNumber = document.querySelectorAll('.numbers');
@@ -150,7 +151,7 @@ function operationClicked(operator) {
 
     if (memory !== '' && inputNumber !== '') {
 
-        operationResult = operate(operationQueued, Number(memory), Number(inputNumber));
+        operationResult = calculator.operate(operationQueued, Number(memory), Number(inputNumber));
         memory = operationResult;
     }
 
