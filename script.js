@@ -1,9 +1,16 @@
 const KEY_NUMBERS = [
     '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.'
 ];
-const KEY_OPERATORS = [
-    '*', '/', '-', '+', '=', 'Enter', 'Backspace'
-];
+
+const CalculatorOperations = {
+    MULTIPLY: '*',
+    DIVIDE: '/',
+    ADD: '+',
+    SUBTRACT: '-',
+    EQUAL: '=',
+    EXECUTE: 'Enter',
+    CORRECT: 'Backspace'
+};
 
 const displayStatus = document.querySelector('#displayStatus');
 const displayHistory = document.querySelector('#displayHistory');
@@ -35,16 +42,16 @@ const divide = (a, b) => a / b;
 
 function operate(operator, num1, num2) {
     switch (operator) {
-        case '+':
+        case CalculatorOperations.ADD:
             let result = add(num1, num2);
             return result;
-        case '-':
+        case CalculatorOperations.SUBTRACT:
             return subtract(num1, num2);
-        case '*':
+        case CalculatorOperations.MULTIPLY:
             return multiply(num1, num2);
-        case '/':
+        case CalculatorOperations.DIVIDE:
             return divide(num1, num2);
-        case '=':
+        case CalculatorOperations.EQUAL:
             if (operator === operationQueued) {
                 return inputNumber;
             } else {
@@ -71,12 +78,14 @@ function keyBoard() {
             let chosenNumber = event.key;
             numberClicked(chosenNumber);
         }
-        if (KEY_OPERATORS.includes(event.key)) {
+
+        let operatorValues = new Set(Object.values(CalculatorOperations));
+        if (operatorValues.has(event.key)) {
             let chosenOperator = event.key;
-            if (chosenOperator === 'Enter') {
-                chosenOperator = '=';
+            if (chosenOperator === CalculatorOperations.EXECUTE) {
+                chosenOperator = CalculatorOperations.EQUAL;
             }
-            if (chosenOperator === 'Backspace') {
+            if (chosenOperator === CalculatorOperations.CORRECT) {
                 inputNumber = inputNumber.slice(0, inputNumber.length - 1);
                 displayStatus.textContent = inputNumber;
                 return;
@@ -118,7 +127,7 @@ function operationClicked(operator) {
     let operationResult = 0;
     decimalBtn.disabled = false;
 
-    if (operationQueued === '/' && inputNumber === '0') {
+    if (operationQueued === CalculatorOperations.DIVIDE && inputNumber === '0') {
         displayStatus.textContent = 'Can\' divide with 0';
         inputNumber = '';
         return;
@@ -147,7 +156,7 @@ function operationClicked(operator) {
 
 function populateDisplay() {
     displayStatus.textContent = '';
-    if (operationQueued === '=') {
+    if (operationQueued === CalculatorOperations.EQUAL) {
         displayHistory.textContent = memory;
     } else {
         displayHistory.textContent = `${memory} ${operationQueued}`;
