@@ -12,6 +12,26 @@ const CalculatorOperations = {
     CORRECT: 'Backspace'
 };
 
+class Calculator {
+    add(a, b){
+        return a + b;
+    }
+
+    subtract(a, b){
+        return a - b;
+    }
+
+    multiply(a, b){
+        return a * b;
+    }
+
+    divide(a, b){
+        return a / b;
+    }
+}
+
+const calculator = new Calculator()
+
 const displayStatus = document.querySelector('#displayStatus');
 const displayHistory = document.querySelector('#displayHistory');
 const decimalBtn = document.querySelector('#decimal');
@@ -35,22 +55,17 @@ function init() {
 }
 init();
 
-const add = (a, b) => a + b;
-const subtract = (a, b) => b < 0 ? a - (-b) : a - b;
-const multiply = (a, b) => a * b;
-const divide = (a, b) => a / b;
-
 function operate(operator, num1, num2) {
     switch (operator) {
         case CalculatorOperations.ADD:
-            let result = add(num1, num2);
+            let result = calculator.add(num1, num2);
             return result;
         case CalculatorOperations.SUBTRACT:
-            return subtract(num1, num2);
+            return calculator.subtract(num1, num2);
         case CalculatorOperations.MULTIPLY:
-            return multiply(num1, num2);
+            return calculator.multiply(num1, num2);
         case CalculatorOperations.DIVIDE:
-            return divide(num1, num2);
+            return calculator.divide(num1, num2);
         case CalculatorOperations.EQUAL:
             if (operator === operationQueued) {
                 return inputNumber;
