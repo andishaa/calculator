@@ -16,63 +16,119 @@ class Calculator {
     memory = '';
     operationQueued = '';
 
-    constructor(){
+    constructor() {
         this.inputNumber = '';
     }
 
-    set inputNumber(number){
-        if (this.inputNumber && this.inputNumber[0] === '0' && !this.isNumberDecimal(number)) {
+    set inputNumber(number) {
+        if (this.inputNumber && this.inputNumber[0] === '0' && this.inputNumber.length === 1 && !this.isNumberDecimal(number)) {
             return;
         }
 
         this.inputNumber_ = number;
     }
 
-    get inputNumber(){
+    get inputNumber() {
         return this.inputNumber_;
     }
 
-    add(a, b){
+    add(a, b) {
         return a + b;
     }
 
-    subtract(a, b){
+    subtract(a, b) {
         return a - b;
     }
 
-    multiply(a, b){
+    multiply(a, b) {
         return a * b;
     }
 
-    divide(a, b){
+    divide(a, b) {
         return a / b;
     }
 
-    operate(operator, num1, num2) {
+    operate(operator) {
+        const num1 = Number(this.memory);
+        const num2 = Number(this.inputNumber);
+
+        if (this.memory === '' && this.inputNumber !== '') {
+            this.memory = this.inputNumber;
+            this.inputNumber = '';
+            this.operationQueued = operator;
+            return;
+        }
+
+        if (this.memory !== '' && this.inputNumber === '') {
+            this.operationQueued = operator;
+            return;
+        }
+
+        if (this.memory === '' && this.inputNumber === '') {
+            this.operationQueued = operator;
+
+            return;
+        }
+
+        if (this.memory !== '' && this.operationQueued === '') {
+            this.inputNumber = '';
+            return;
+        }
+
+        let result = 0;
+
         switch (operator) {
             case CalculatorOperations.ADD:
-                let result = this.add(num1, num2);
-                return result;
+                result = this.add(num1, num2);
+                break;
             case CalculatorOperations.SUBTRACT:
-                return this.subtract(num1, num2);
+                result = this.subtract(num1, num2);
+                break;
             case CalculatorOperations.MULTIPLY:
-                return this.multiply(num1, num2);
+                result = this.multiply(num1, num2);
+                break;
             case CalculatorOperations.DIVIDE:
-                return this.divide(num1, num2);
+                result = this.divide(num1, num2);
+                break;
             case CalculatorOperations.EQUAL:
                 if (operator === this.operationQueued) {
-                    return this.inputNumber;
+                    result = this.inputNumber;
                 } else {
-                    return this.operate(this.operationQueued, num1, num2);
+                    return result = this.operate(this.operationQueued);
                 }
+                break;
         }
+
+        if (!Number.isInteger(result)) {
+            result = result.toFixed(2);
+        }
+
+        this.memory = '' + result;
+        this.operationQueued = '';
+        this.inputNumber = '';
+        return result;
     }
 
-    isInputNumberDecimal(){
+    clear() {
+        this.inputNumber = '';
+        this.memory = '';
+        this.operationQueued = '';
+
+    }
+
+    clearEntry() {
+        this.inputNumber = '';
+    }
+
+    correct() {
+        this.inputNumber = this.inputNumber.slice(0, this.inputNumber.length - 1);
+    }
+
+    isInputNumberDecimal() {
         return this.isNumberDecimal(this.inputNumber);
     }
 
-    isNumberDecimal(number){
+    isNumberDecimal(number) {
         return number.includes('.');
     }
 }
@@ -158,7 +214,6 @@ function initOperationBtns() {
 }
 
 function operationClicked(operator) {
-    let operationResult = 0;
     decimalBtn.disabled = false;
 
     if (calculator.operationQueued === CalculatorOperations.DIVIDE && calculator.inputNumber === '0') {
@@ -167,23 +222,7 @@ function operationClicked(operator) {
         return;
     }
 
-    if (calculator.memory !== '' && calculator.inputNumber !== '') {
-
-        operationResult = calculator.operate(calculator.operationQueued, Number(calculator.memory), Number(calculator.inputNumber));
-        calculator.memory = operationResult;
-    }
-
-    calculator.operationQueued = operator;
-
-    if (calculator.memory === '' && calculator.inputNumber !== '') {
-        calculator.memory = calculator.inputNumber;
-    }
-
-    if (!Number.isInteger(calculator.memory) && typeof calculator.memory !== 'string') {
-        calculator.memory = calculator.memory.toFixed(2);
-    }
-
-    calculator.inputNumber = '';
+    calculator.operate(operator);
 
     populateDisplay();
 }
@@ -199,9 +238,7 @@ function populateDisplay() {
 
 function clearGlobal() {
     clearGlobalBtn.addEventListener('click', () => {
-        calculator.inputNumber = '';
-        calculator.memory = '';
-        calculator.operationQueued = '';
+        calculator.clear();
         displayStatus.textContent = '';
         displayHistory.textContent = '';
         decimalBtn.disabled = false;
@@ -210,7 +247,7 @@ function clearGlobal() {
 
 function clearEntry() {
     clearEntryBtn.addEventListener('click', () => {
-        calculator.inputNumber = '';
+        calculator.clearEntry();
         displayStatus.textContent = '';
         decimalBtn.disabled = false;
     });
@@ -218,15 +255,15 @@ function clearEntry() {
 
 function backSpaceEraser() {
     backSpaceBtn.addEventListener('click', () => {
-        calculator.inputNumber = calculator.inputNumber.slice(0, calculator.inputNumber.length - 1);
+        calculator.correct();
         displayStatus.textContent = calculator.inputNumber;
     });
 }
 
 function addRemoveMinus() {
     plusMinusBtn.addEventListener('click', () => {
-    
-        if(calculator.inputNumber.charAt(0) !== '-') {
+
+        if (calculator.inputNumber.charAt(0) !== '-') {
             calculator.inputNumber = `-${calculator.inputNumber}`
         } else {
             calculator.inputNumber = calculator.inputNumber.slice(1);
