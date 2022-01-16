@@ -14,8 +14,23 @@ const CalculatorOperations = {
 
 class Calculator {
     memory = '';
-    inputNumber = '';
     operationQueued = '';
+
+    constructor(){
+        this.inputNumber = '';
+    }
+
+    set inputNumber(number){
+        if (this.inputNumber && this.inputNumber[0] === '0' && !this.isNumberDecimal(number)) {
+            return;
+        }
+
+        this.inputNumber_ = number;
+    }
+
+    get inputNumber(){
+        return this.inputNumber_;
+    }
 
     add(a, b){
         return a + b;
@@ -51,6 +66,14 @@ class Calculator {
                     return this.operate(this.operationQueued, num1, num2);
                 }
         }
+    }
+
+    isInputNumberDecimal(){
+        return this.isNumberDecimal(this.inputNumber);
+    }
+
+    isNumberDecimal(number){
+        return number.includes('.');
     }
 }
 
@@ -115,16 +138,11 @@ function numberClicked(strNumber) {
 
     calculator.inputNumber += strNumber;
 
-    if (calculator.inputNumber.includes('.')) {
+    if (calculator.isInputNumberDecimal()) {
         decimalBtn.disabled = true;
     }
 
-    if (calculator.inputNumber.charAt(0) === '0' && decimalBtn.disabled === false) {
-        calculator.inputNumber = '0';
-    }
-
     displayStatus.textContent = calculator.inputNumber;
-
 }
 
 function initOperationBtns() {
