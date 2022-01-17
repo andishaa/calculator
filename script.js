@@ -1,3 +1,140 @@
+const KEY_NUMBERS = [
+    '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.'
+];
+
+const CalculatorOperations = {
+    MULTIPLY: '*',
+    DIVIDE: '/',
+    ADD: '+',
+    SUBTRACT: '-',
+    EQUAL: '=',
+    EXECUTE: 'Enter',
+    CORRECT: 'Backspace'
+};
+
+class Calculator {
+    memory = '';
+    operationQueued = '';
+
+    constructor() {
+        this.inputNumber = '';
+    }
+
+    set inputNumber(number) {
+        if (this.inputNumber && this.inputNumber[0] === '0' && this.inputNumber.length === 1 && !this.isNumberDecimal(number)) {
+            return;
+        }
+
+        this.inputNumber_ = number;
+    }
+
+    get inputNumber() {
+        return this.inputNumber_;
+    }
+
+    add(a, b) {
+        return a + b;
+    }
+
+    subtract(a, b) {
+        return a - b;
+    }
+
+    multiply(a, b) {
+        return a * b;
+    }
+
+    divide(a, b) {
+        return a / b;
+    }
+
+    operate(operator) {
+        const num1 = Number(this.memory);
+        const num2 = Number(this.inputNumber);
+
+        if (this.memory === '' && this.inputNumber !== '') {
+            this.memory = this.inputNumber;
+            this.inputNumber = '';
+            this.operationQueued = operator;
+            return;
+        }
+
+        if (this.memory !== '' && this.inputNumber === '') {
+            this.operationQueued = operator;
+            return;
+        }
+
+        if (this.memory === '' && this.inputNumber === '') {
+            this.operationQueued = operator;
+
+            return;
+        }
+
+        if (this.memory !== '' && this.operationQueued === '') {
+            this.inputNumber = '';
+            return;
+        }
+
+        let result = 0;
+
+        switch (operator) {
+            case CalculatorOperations.ADD:
+                result = this.add(num1, num2);
+                break;
+            case CalculatorOperations.SUBTRACT:
+                result = this.subtract(num1, num2);
+                break;
+            case CalculatorOperations.MULTIPLY:
+                result = this.multiply(num1, num2);
+                break;
+            case CalculatorOperations.DIVIDE:
+                result = this.divide(num1, num2);
+                break;
+            case CalculatorOperations.EQUAL:
+                if (operator === this.operationQueued) {
+                    result = this.inputNumber;
+                } else {
+                    return result = this.operate(this.operationQueued);
+                }
+                break;
+        }
+
+        if (!Number.isInteger(result)) {
+            result = result.toFixed(2);
+        }
+
+        this.memory = '' + result;
+        this.operationQueued = '';
+        this.inputNumber = '';
+        return result;
+    }
+
+    clear() {
+        this.inputNumber = '';
+        this.memory = '';
+        this.operationQueued = '';
+
+    }
+
+    clearEntry() {
+        this.inputNumber = '';
+    }
+
+    correct() {
+        this.inputNumber = this.inputNumber.slice(0, this.inputNumber.length - 1);
+    }
+
+    isInputNumberDecimal() {
+        return this.isNumberDecimal(this.inputNumber);
+    }
+
+    isNumberDecimal(number) {
+        return number.includes('.');
+    }
+}
+
+const calculator = new Calculator();
+
 const displayStatus = document.querySelector('#displayStatus');
 const displayHistory = document.querySelector('#displayHistory');
 const decimalBtn = document.querySelector('#decimal');
@@ -5,10 +142,6 @@ const clearGlobalBtn = document.querySelector('#clearGlobal');
 const clearEntryBtn = document.querySelector('#clearEntry');
 const backSpaceBtn = document.querySelector('#backSpace');
 const plusMinusBtn = document.querySelector('#plusMinus');
-
-let memory = '';
-let inputNumber = '';
-let operationQueued = '';
 
 function init() {
     initNumberBtns();
@@ -19,32 +152,8 @@ function init() {
     keyBoard();
     addRemoveMinus();
 }
+
 init();
-
-const add = (a, b) => a + b;
-const subtract = (a, b) => b < 0 ? a - (-b) : a - b;
-const multiply = (a, b) => a * b;
-const divide = (a, b) => a / b;
-
-function operate(operator, num1, num2) {
-    switch (operator) {
-        case '+':
-            let result = add(num1, num2);
-            return result;
-        case '-':
-            return subtract(num1, num2);
-        case '*':
-            return multiply(num1, num2);
-        case '/':
-            return divide(num1, num2);
-        case '=':
-            if (operator === operationQueued) {
-                return inputNumber;
-            } else {
-                return operate(operationQueued, num1, num2);
-            }
-    }
-};
 
 function initNumberBtns() {
     const selectedNumber = document.querySelectorAll('.numbers');
@@ -58,27 +167,22 @@ function initNumberBtns() {
     });
 }
 
-const KEY_NUMBERS = [
-    '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.'
-]
-const KEY_OPERATORS = [
-    '*', '/', '-', '+', '=', 'Enter', 'Backspace'
-]
-
 function keyBoard() {
     document.addEventListener('keydown', event => {
         if (KEY_NUMBERS.includes(event.key)) {
             let chosenNumber = event.key;
             numberClicked(chosenNumber);
         }
-        if (KEY_OPERATORS.includes(event.key)) {
+
+        let operatorValues = new Set(Object.values(CalculatorOperations));
+        if (operatorValues.has(event.key)) {
             let chosenOperator = event.key;
-            if (chosenOperator === 'Enter') {
-                chosenOperator = '=';
+            if (chosenOperator === CalculatorOperations.EXECUTE) {
+                chosenOperator = CalculatorOperations.EQUAL;
             }
-            if (chosenOperator === 'Backspace') {
-                inputNumber = inputNumber.slice(0, inputNumber.length - 1);
-                displayStatus.textContent = inputNumber;
+            if (chosenOperator === CalculatorOperations.CORRECT) {
+                calculator.inputNumber = calculator.inputNumber.slice(0, calculator.inputNumber.length - 1);
+                displayStatus.textContent = calculator.inputNumber;
                 return;
             }
             operationClicked(chosenOperator);
@@ -88,18 +192,13 @@ function keyBoard() {
 
 function numberClicked(strNumber) {
 
-    inputNumber += strNumber;
+    calculator.inputNumber += strNumber;
 
-    if (inputNumber.includes('.')) {
+    if (calculator.isInputNumberDecimal()) {
         decimalBtn.disabled = true;
     }
 
-    if (inputNumber.charAt(0) === '0' && decimalBtn.disabled === false) {
-        inputNumber = '0';
-    }
-
-    displayStatus.textContent = inputNumber;
-
+    displayStatus.textContent = calculator.inputNumber;
 }
 
 function initOperationBtns() {
@@ -115,50 +214,31 @@ function initOperationBtns() {
 }
 
 function operationClicked(operator) {
-    let operationResult = 0;
     decimalBtn.disabled = false;
 
-    if (operationQueued === '/' && inputNumber === '0') {
+    if (calculator.operationQueued === CalculatorOperations.DIVIDE && calculator.inputNumber === '0') {
         displayStatus.textContent = 'Can\' divide with 0';
-        inputNumber = '';
+        calculator.inputNumber = '';
         return;
     }
 
-    if (memory !== '' && inputNumber !== '') {
-
-        operationResult = operate(operationQueued, Number(memory), Number(inputNumber));
-        memory = operationResult;
-    }
-
-    operationQueued = operator;
-
-    if (memory === '' && inputNumber !== '') {
-        memory = inputNumber;
-    }
-
-    if (!Number.isInteger(memory) && typeof memory !== 'string') {
-        memory = memory.toFixed(2);
-    }
-
-    inputNumber = '';
+    calculator.operate(operator);
 
     populateDisplay();
 }
 
 function populateDisplay() {
     displayStatus.textContent = '';
-    if (operationQueued === '=') {
-        displayHistory.textContent = memory;
+    if (calculator.operationQueued === CalculatorOperations.EQUAL) {
+        displayHistory.textContent = calculator.memory;
     } else {
-        displayHistory.textContent = `${memory} ${operationQueued}`;
+        displayHistory.textContent = `${calculator.memory} ${calculator.operationQueued}`;
     }
 }
 
 function clearGlobal() {
     clearGlobalBtn.addEventListener('click', () => {
-        inputNumber = '';
-        memory = '';
-        operationQueued = '';
+        calculator.clear();
         displayStatus.textContent = '';
         displayHistory.textContent = '';
         decimalBtn.disabled = false;
@@ -167,7 +247,7 @@ function clearGlobal() {
 
 function clearEntry() {
     clearEntryBtn.addEventListener('click', () => {
-        inputNumber = '';
+        calculator.clearEntry();
         displayStatus.textContent = '';
         decimalBtn.disabled = false;
     });
@@ -175,19 +255,19 @@ function clearEntry() {
 
 function backSpaceEraser() {
     backSpaceBtn.addEventListener('click', () => {
-        inputNumber = inputNumber.slice(0, inputNumber.length - 1);
-        displayStatus.textContent = inputNumber;
+        calculator.correct();
+        displayStatus.textContent = calculator.inputNumber;
     });
 }
 
 function addRemoveMinus() {
     plusMinusBtn.addEventListener('click', () => {
-    
-        if(inputNumber.charAt(0) !== '-') {
-            inputNumber = `-${inputNumber}`
+
+        if (calculator.inputNumber.charAt(0) !== '-') {
+            calculator.inputNumber = `-${calculator.inputNumber}`
         } else {
-            inputNumber = inputNumber.slice(1);
+            calculator.inputNumber = calculator.inputNumber.slice(1);
         }
-        displayStatus.textContent = inputNumber;
+        displayStatus.textContent = calculator.inputNumber;
     });
 }
