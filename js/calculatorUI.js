@@ -11,6 +11,7 @@ const calculator = new Calculator();
 
 export class UIRenderer {
     constructor(container){
+        this.injectCSS();
         container.innerHTML = `<div id="display">
                                     <div id="displayHistory"></div>
                                     <div id="displayStatus"></div>
@@ -48,8 +49,8 @@ export class UIRenderer {
         this.clearEntryBtn = document.querySelector('#clearEntry');
         this.backSpaceBtn = document.querySelector('#backSpace');
         this.plusMinusBtn = document.querySelector('#plusMinus');
-
     }
+    
     initialRender(){
         this.initNumberBtns();
         this.initOperationBtns();
@@ -170,5 +171,20 @@ export class UIRenderer {
             calculator.toggleNumberSign()
             this.displayStatus.textContent = calculator.inputNumber;
         });
+    }
+
+    injectCSS(){
+        var cssId = 'myCss';  // you could encode the css path itself to generate id..
+        if (!document.getElementById(cssId))
+        {
+            var head  = document.getElementsByTagName('head')[0];
+            var link  = document.createElement('link');
+            link.id   = cssId;
+            link.rel  = 'stylesheet';
+            link.type = 'text/css';
+            link.href = 'css/style.css';
+            link.media = 'all';
+            head.appendChild(link);
+        }
     }
 }
