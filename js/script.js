@@ -1,7 +1,8 @@
 import { UIRenderer } from "./calculatorUI.js";
 
 function init() {
-    const renderer = new UIRenderer();
+    const calculatorContainer = document.querySelector("body main");
+    const renderer = new UIRenderer(calculatorContainer);
     renderer.initialRender();
 }
 

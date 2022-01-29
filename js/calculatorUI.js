@@ -10,7 +10,37 @@ const calculator = new Calculator();
 
 
 export class UIRenderer {
-    constructor(){
+    constructor(container){
+        container.innerHTML = `<div id="display">
+                                    <div id="displayHistory"></div>
+                                    <div id="displayStatus"></div>
+                                </div>
+                                <div id="buttons">
+                                    <button id="backSpace">&#8592;</button>
+                                    <button id="clearEntry">CE</button>
+                                    <button id="clearGlobal">C</button>
+                                    <button id="plusMinus">+/-</button>
+
+                                    <button class="numbers">7</button>
+                                    <button class="numbers">8</button>
+                                    <button class="numbers">9</button>
+                                    <button id="operator-multiply" class="operators">*</button>
+
+                                    <button class="numbers">4</button>
+                                    <button class="numbers">5</button>
+                                    <button class="numbers">6</button>
+                                    <button id="operator-divide" class="operators">/</button>
+
+                                    <button class="numbers">1</button>
+                                    <button class="numbers">2</button>
+                                    <button class="numbers">3</button>
+                                    <button id="operator-minus" class="operators">-</button>
+
+                                    <button id="decimal" class="numbers">.</button>
+                                    <button class="numbers">0</button>
+                                    <button id="equal" class="operators">=</button>
+                                    <button id="operator-plus" class="operators">+</button>
+                                </div>`
         this.displayStatus = document.querySelector('#displayStatus');
         this.displayHistory = document.querySelector('#displayHistory');
         this.decimalBtn = document.querySelector('#decimal');
