@@ -131,6 +131,14 @@ class Calculator {
     isNumberDecimal(number) {
         return number.includes('.');
     }
+
+    toggleNumberSign(){
+        if (calculator.inputNumber.charAt(0) !== '-') {
+            calculator.inputNumber = `-${calculator.inputNumber}`
+        } else {
+            calculator.inputNumber = calculator.inputNumber.slice(1);
+        }
+    }
 }
 
 const calculator = new Calculator();
@@ -262,12 +270,7 @@ function backSpaceEraser() {
 
 function addRemoveMinus() {
     plusMinusBtn.addEventListener('click', () => {
-
-        if (calculator.inputNumber.charAt(0) !== '-') {
-            calculator.inputNumber = `-${calculator.inputNumber}`
-        } else {
-            calculator.inputNumber = calculator.inputNumber.slice(1);
-        }
+        calculator.toggleNumberSign()
         displayStatus.textContent = calculator.inputNumber;
     });
 }
