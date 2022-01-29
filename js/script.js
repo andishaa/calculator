@@ -6,13 +6,6 @@ const KEY_NUMBERS = [
 
 const calculator = new Calculator();
 
-const displayStatus = document.querySelector('#displayStatus');
-const displayHistory = document.querySelector('#displayHistory');
-const decimalBtn = document.querySelector('#decimal');
-const clearGlobalBtn = document.querySelector('#clearGlobal');
-const clearEntryBtn = document.querySelector('#clearEntry');
-const backSpaceBtn = document.querySelector('#backSpace');
-const plusMinusBtn = document.querySelector('#plusMinus');
 
 function init() {
     const renderer = new UIRenderer();
@@ -20,6 +13,16 @@ function init() {
 }
 
 class UIRenderer {
+    constructor(){
+        this.displayStatus = document.querySelector('#displayStatus');
+        this.displayHistory = document.querySelector('#displayHistory');
+        this.decimalBtn = document.querySelector('#decimal');
+        this.clearGlobalBtn = document.querySelector('#clearGlobal');
+        this.clearEntryBtn = document.querySelector('#clearEntry');
+        this.backSpaceBtn = document.querySelector('#backSpace');
+        this.plusMinusBtn = document.querySelector('#plusMinus');
+
+    }
     initialRender(){
         this.initNumberBtns();
         this.initOperationBtns();
@@ -57,7 +60,7 @@ class UIRenderer {
                 }
                 if (chosenOperator === CalculatorOperations.CORRECT) {
                     calculator.inputNumber = calculator.inputNumber.slice(0, calculator.inputNumber.length - 1);
-                    displayStatus.textContent = calculator.inputNumber;
+                    this.displayStatus.textContent = calculator.inputNumber;
                     return;
                 }
                 this.operationClicked(chosenOperator);
@@ -70,10 +73,10 @@ class UIRenderer {
         calculator.inputNumber += strNumber;
     
         if (calculator.isInputNumberDecimal()) {
-            decimalBtn.disabled = true;
+            this.decimalBtn.disabled = true;
         }
     
-        displayStatus.textContent = calculator.inputNumber;
+        this.displayStatus.textContent = calculator.inputNumber;
     }
 
     initOperationBtns() {
@@ -89,10 +92,10 @@ class UIRenderer {
     }
 
     operationClicked(operator) {
-        decimalBtn.disabled = false;
+        this.decimalBtn.disabled = false;
     
         if (calculator.operationQueued === CalculatorOperations.DIVIDE && calculator.inputNumber === '0') {
-            displayStatus.textContent = 'Can\' divide with 0';
+            this.displayStatus.textContent = 'Can\' divide with 0';
             calculator.inputNumber = '';
             return;
         }
@@ -103,42 +106,42 @@ class UIRenderer {
     }
 
     populateDisplay() {
-        displayStatus.textContent = '';
+        this.displayStatus.textContent = '';
         if (calculator.operationQueued === CalculatorOperations.EQUAL) {
-            displayHistory.textContent = calculator.memory;
+            this.displayHistory.textContent = calculator.memory;
         } else {
-            displayHistory.textContent = `${calculator.memory} ${calculator.operationQueued}`;
+            this.displayHistory.textContent = `${calculator.memory} ${calculator.operationQueued}`;
         }
     }
 
     setUpClearGlobalBtn() {
-        clearGlobalBtn.addEventListener('click', () => {
+        this.clearGlobalBtn.addEventListener('click', () => {
             calculator.clear();
-            displayStatus.textContent = '';
-            displayHistory.textContent = '';
-            decimalBtn.disabled = false;
+            this.displayStatus.textContent = '';
+            this.displayHistory.textContent = '';
+            this.decimalBtn.disabled = false;
         });
     }
 
     setUpClearEntryButton() {
-        clearEntryBtn.addEventListener('click', () => {
+        this.clearEntryBtn.addEventListener('click', () => {
             calculator.clearEntry();
-            displayStatus.textContent = '';
-            decimalBtn.disabled = false;
+            this.displayStatus.textContent = '';
+            this.decimalBtn.disabled = false;
         });
     }
 
     setUpBackSpaceEraserBtn() {
-        backSpaceBtn.addEventListener('click', () => {
+        this.backSpaceBtn.addEventListener('click', () => {
             calculator.correct();
-            displayStatus.textContent = calculator.inputNumber;
+            this.displayStatus.textContent = calculator.inputNumber;
         });
     }
 
     setUpToggleNumberSignBtn() {
-        plusMinusBtn.addEventListener('click', () => {
+        this.plusMinusBtn.addEventListener('click', () => {
             calculator.toggleNumberSign()
-            displayStatus.textContent = calculator.inputNumber;
+            this.displayStatus.textContent = calculator.inputNumber;
         });
     }
 }
