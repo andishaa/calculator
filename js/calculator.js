@@ -129,10 +129,10 @@ export class Calculator {
     }
 
     toggleNumberSign(){
-        if (calculator.inputNumber.charAt(0) !== '-') {
-            calculator.inputNumber = `-${calculator.inputNumber}`
+        if (this.inputNumber.charAt(0) !== '-') {
+            this.inputNumber = `-${this.inputNumber}`
         } else {
-            calculator.inputNumber = calculator.inputNumber.slice(1);
+            this.inputNumber = this.inputNumber.slice(1);
         }
     }
 }
