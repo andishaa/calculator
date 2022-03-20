@@ -97,6 +97,9 @@ export class UIRenderer {
     }
 
     numberClicked(strNumber) {
+        if (calculator.memory !== '' && calculator.operationQueued === CalculatorOperations.EQUAL) {
+            return;
+        }
 
         calculator.inputNumber += strNumber;
     
