@@ -73,7 +73,7 @@ export class Calculator {
 
         let result = 0;
 
-        switch (operator) {
+        switch (this.operationQueued) {
             case CalculatorOperations.ADD:
                 result = this.add(num1, num2);
                 break;
@@ -100,7 +100,7 @@ export class Calculator {
         }
 
         this.memory = '' + result;
-        this.operationQueued = '';
+        this.operationQueued = operator;
         this.inputNumber = '';
         return result;
     }
